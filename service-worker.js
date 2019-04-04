@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/Soccer-gameon/precache-manifest.6d3984fe6c471c71b702a80df0ab6a7c.js"
+  "/soccer-gameon/precache-manifest.06ac32f3dfba4a30fe2e88cb50843bb4.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/Soccer-gameon/index.html", {
+workbox.routing.registerNavigationRoute("/soccer-gameon/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
