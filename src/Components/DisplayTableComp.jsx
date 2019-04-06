@@ -44,7 +44,6 @@ export class DisplayTableComp extends Component {
         this.gameStatus();
       }
       componentDidUpdate( prevState) {
-        console.log(this.state);
         if (prevState !== this.state) {
           this.gameStatus();
         }
@@ -65,11 +64,22 @@ export class DisplayTableComp extends Component {
             totalPlayers: updatedPlayersList
           });
         });
+        this.removeAllPlayers();
       }
       removeItem(thisPlayer) {
         const playerCount = firebase.database().ref(`/players/${thisPlayer}`);
         playerCount.remove();
         console.log("player removed");
+      }
+      removeAllPlayers() {
+        const playerDelete = firebase.database().ref();
+        let stopTime = new Date().getHours();
+        if(stopTime >= 14){
+          playerDelete.remove();
+          console.log("All players removed");
+        }else{
+          console.log("Not 2pm yet");
+        }
       }
       
     
@@ -108,7 +118,7 @@ export class DisplayTableComp extends Component {
         let gameScheduledYes = this.gameScheduledNotification;
         let gameScheduledNo = this.gameNotScheduledNotification;
         let todayDay = new Date().getDay();
-        const isDayEnabled = (todayDay === 0 || todayDay === 2 || todayDay === 4 || todayDay === 5);
+        const isDayEnabled = (todayDay === 0 || todayDay === 2 || todayDay === 4 || todayDay === 6);
         if(isDayEnabled === true){
           gameScheduledNo();
         }else{
@@ -129,90 +139,90 @@ export class DisplayTableComp extends Component {
     const { name } = this.state;
     const isEnabled = name.length > 0;
     let todayDay = new Date().getDay();
-    const isDayEnabled = (todayDay === 0 || todayDay === 2 || todayDay === 4 || todayDay === 5);
+    const isDayEnabled = (todayDay === 0 || todayDay === 2 || todayDay === 4 || todayDay === 6);
 
     const errors = validateName(this.state.name);
     return (
-        <div className="container bodyContent">
-            <div className="row">
-                <div className="col-xl-12">
-                    <h1>Soccer Game Day - <span id="setDate">{this.getTodaysDate()}</span></h1>
-                    <h2 id="setGameStatus">Players Count Status</h2>
+      <div className="container bodyContent">
+        <div className="row">
+          <div className="col-xl-12">
+            <h1>Soccer Game Day - <span id="setDate">{this.getTodaysDate()}</span></h1>
+            <h2 id="setGameStatus">Players Count Status</h2>
+          </div>
+        </div>          
+        <div className="row">
+          <div className="col-xl-12">
+            <h3 id="gameDayStatus">Game Schedule Status</h3>
+            <form onSubmit={this.handleSubmit}>
+              <div className="form-row">
+                <input type="hidden" ref="uid" />
+                <div className="form-group col-md-6">
+                  <label htmlFor="playerName">First Name</label>
+                  <input
+                  id="playerName"
+                  type="text"
+                  ref="name"
+                  name="name"
+                  className={errors.name ? "form-control error" : "form-control"}
+                  placeholder="First Name"
+                  pattern="[a-zA-Z]+"
+                  value={this.state.name}
+                  onChange={this.handleChange}
+                  disabled={isDayEnabled}
+                  autoFocus
+                  autoComplete="off"
+                  />
                 </div>
-            </div>          
-            <div className="row">
-                <div className="col-xl-12">
-                    <h3 id="gameDayStatus">Game Schedule Status</h3>
-                    <form onSubmit={this.handleSubmit}>
-                        <div className="form-row">
-                            <input type="hidden" ref="uid" />
-                            <div className="form-group col-md-6">
-                                <label htmlFor="playerName">First Name</label>
-                                <input
-                                id="playerName"
-                                type="text"
-                                ref="name"
-                                name="name"
-                                className={errors.name ? "form-control error" : "form-control"}
-                                placeholder="First Name"
-                                pattern="[a-zA-Z]+"
-                                value={this.state.name}
-                                onChange={this.handleChange}
-                                disabled={isDayEnabled}
-                                autoFocus
-                                autoComplete="off"
-                                />
-                            </div>
-                            <div className="form-group col-md-6">
-                                <label>Team<br/>
-                                    <input type="radio" name="teamColor" required className="teamColorRadio"
-                                    value="Any" checked={this.state.teamColor === "Any"}
-                                    onChange={this.handleChange} disabled={isDayEnabled}/>Any
-                                    <input type="radio" name="teamColor" className="teamColorRadio"
-                                    value="White" checked={this.state.teamColor === "White"}
-                                    onChange={this.handleChange} disabled={isDayEnabled}/>White
-                                    <input type="radio" name="teamColor" className="teamColorRadio"
-                                    value="Dark" checked={this.state.teamColor === "Dark"}
-                                    onChange={this.handleChange} disabled={isDayEnabled}/>Dark
-                                </label>
-                            </div>
-                        </div>
-                        <button type="submit" className="btn btn-primary" disabled={!isEnabled}>
-                            Save
-                        </button>
-                    </form>
+                <div className="form-group col-md-6">
+                  <label>Team<br/>
+                  <input type="radio" name="teamColor" required className="teamColorRadio"
+                  value="Any" checked={this.state.teamColor === "Any"}
+                  onChange={this.handleChange} disabled={isDayEnabled}/>Any
+                  <input type="radio" name="teamColor" className="teamColorRadio"
+                  value="White" checked={this.state.teamColor === "White"}
+                  onChange={this.handleChange} disabled={isDayEnabled}/>White
+                  <input type="radio" name="teamColor" className="teamColorRadio"
+                  value="Dark" checked={this.state.teamColor === "Dark"}
+                  onChange={this.handleChange} disabled={isDayEnabled}/>Dark
+                  </label>
                 </div>
-            </div>
-            <div className="row">
-                <div className="col-xl-12">
-                    <table className="table-striped table-bordered playersList">
-                        <thead>
-                            <tr>
-                                <th>First Name</th>
-                                <th>Team</th>
-                                <th>Option</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.totalPlayers.map(playerDetails => (                 
-                            <tr key={playerDetails.id}>
-                                <td>{playerDetails.namedb}</td>
-                                <td>{playerDetails.teamColordb}</td>
-                                <td>
-                                <button
-                                    onClick={() => this.removeItem(playerDetails.id)}
-                                    className="btn btn-link"
-                                    >
-                                    Delete
-                                </button>
-                                </td>
-                            </tr>
-                            ))}
-                        </tbody>
-                    </table>              
-                </div>
-            </div>
+              </div>
+              <button type="submit" className="btn btn-primary" disabled={!isEnabled}>
+                  Save
+              </button>
+            </form>
+          </div>
         </div>
+        <div className="row">
+          <div className="col-xl-12">
+            <table className="table-striped table-bordered playersList">
+                <thead>
+                  <tr>
+                    <th>First Name</th>
+                    <th>Team</th>
+                    <th>Option</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.totalPlayers.map(playerDetails => (                 
+                  <tr key={playerDetails.id}>
+                    <td>{playerDetails.namedb}</td>
+                    <td>{playerDetails.teamColordb}</td>
+                    <td>
+                    <button
+                        onClick={() => this.removeItem(playerDetails.id)}
+                        className="btn btn-link"
+                        >
+                        Delete
+                    </button>
+                    </td>
+                  </tr>
+                  ))}
+                </tbody>
+              </table>              
+          </div>
+        </div>
+      </div>
     )
   }
 }
