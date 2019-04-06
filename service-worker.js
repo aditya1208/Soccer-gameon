@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/soccer-gameon/precache-manifest.06ac32f3dfba4a30fe2e88cb50843bb4.js"
+  "/soccer-gameon/precache-manifest.d9868cb067751ee995f4d6fb41f48d04.js"
 );
 
 workbox.clientsClaim();

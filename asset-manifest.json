@@ -1,15 +1,15 @@
 {
-  "main.css": "/soccer-gameon/static/css/main.48a0b899.chunk.css",
-  "main.js": "/soccer-gameon/static/js/main.00216084.chunk.js",
-  "main.js.map": "/soccer-gameon/static/js/main.00216084.chunk.js.map",
+  "main.css": "/soccer-gameon/static/css/main.4fcac44d.chunk.css",
+  "main.js": "/soccer-gameon/static/js/main.58a82fa0.chunk.js",
+  "main.js.map": "/soccer-gameon/static/js/main.58a82fa0.chunk.js.map",
   "runtime~main.js": "/soccer-gameon/static/js/runtime~main.67c57b44.js",
   "runtime~main.js.map": "/soccer-gameon/static/js/runtime~main.67c57b44.js.map",
   "static/css/2.28f2fc55.chunk.css": "/soccer-gameon/static/css/2.28f2fc55.chunk.css",
-  "static/js/2.829bb8cf.chunk.js": "/soccer-gameon/static/js/2.829bb8cf.chunk.js",
-  "static/js/2.829bb8cf.chunk.js.map": "/soccer-gameon/static/js/2.829bb8cf.chunk.js.map",
+  "static/js/2.c0de80f2.chunk.js": "/soccer-gameon/static/js/2.c0de80f2.chunk.js",
+  "static/js/2.c0de80f2.chunk.js.map": "/soccer-gameon/static/js/2.c0de80f2.chunk.js.map",
   "index.html": "/soccer-gameon/index.html",
-  "precache-manifest.06ac32f3dfba4a30fe2e88cb50843bb4.js": "/soccer-gameon/precache-manifest.06ac32f3dfba4a30fe2e88cb50843bb4.js",
+  "precache-manifest.d9868cb067751ee995f4d6fb41f48d04.js": "/soccer-gameon/precache-manifest.d9868cb067751ee995f4d6fb41f48d04.js",
   "service-worker.js": "/soccer-gameon/service-worker.js",
   "static/css/2.28f2fc55.chunk.css.map": "/soccer-gameon/static/css/2.28f2fc55.chunk.css.map",
-  "static/css/main.48a0b899.chunk.css.map": "/soccer-gameon/static/css/main.48a0b899.chunk.css.map"
+  "static/css/main.4fcac44d.chunk.css.map": "/soccer-gameon/static/css/main.4fcac44d.chunk.css.map"
 }
