@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Firebase from "firebase";
+import firebase from "firebase";
 import config from "./../js/config";
 
 function validateName (name){
@@ -10,46 +10,69 @@ function validateName (name){
 };
 
 export class DisplayTableComp extends Component {
-    constructor(props) {
-        super(props);
-        Firebase.initializeApp(config);
+    constructor() {
+        super();
+
+        firebase.initializeApp(config);
     
         this.state = {
-          setTeamValue: '',
+          teamColor: '',
           name: '',
-          developers: []
+          totalPlayers: []
         };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
       }
-    
-      componentDidMount() {
-        this.getUserData();
-        this.removeAllData();
+      handleChange(e) {
+        this.setState({
+          [e.target.name]: e.target.value
+        });
       }
-    
-      componentDidUpdate(prevProps, prevState) {
+      handleSubmit(e) {
+        e.preventDefault();
+        const playerCount = firebase.database().ref('players');
+        const playerDetails = {
+          teamColordb: this.state.teamColor,
+          namedb: this.state.name
+        }
+        playerCount.push(playerDetails);
+        this.setState({
+          teamColor: '',
+          name: ''
+        });
+        
+        this.gameStatus();
+      }
+      componentDidUpdate( prevState) {
+        console.log(this.state);
         if (prevState !== this.state) {
-          this.writeUserData();
           this.gameStatus();
         }
       }
-    
-      writeUserData = () => {
-        Firebase.database()
-          .ref("/")
-          .set(this.state);
-        console.log("DATA SAVED");
-      };
-    
-      getUserData = () => {
-        let ref = Firebase.database().ref("/");
-        ref.on("value", snapshot => {
-          const state = snapshot.val();
-          this.setState(state);
+      componentDidMount() {
+        const playerCount = firebase.database().ref('players');
+        playerCount.on('value', (snapshot) => {
+          let totalPlayers = snapshot.val();
+          let updatedPlayersList = [];
+          for (let playerDetails in totalPlayers) {
+            updatedPlayersList.push({
+              id: playerDetails,
+              teamColordb: totalPlayers[playerDetails].teamColordb,
+              namedb: totalPlayers[playerDetails].namedb
+            });
+          }
+          this.setState({
+            totalPlayers: updatedPlayersList
+          });
         });
-      };
+      }
+      removeItem(thisPlayer) {
+        const playerCount = firebase.database().ref(`/players/${thisPlayer}`);
+        playerCount.remove();
+        console.log("player removed");
+      }
+      
     
-      
-      
     
       getTodaysDate = () =>{
         let todayDate = new Date();
@@ -81,11 +104,11 @@ export class DisplayTableComp extends Component {
         );
       };
     
-      gameStatus = developers =>{
+      gameStatus = () =>{
         let gameScheduledYes = this.gameScheduledNotification;
         let gameScheduledNo = this.gameNotScheduledNotification;
         let todayDay = new Date().getDay();
-        const isDayEnabled = (todayDay === 0 || todayDay === 2 || todayDay === 4 || todayDay === 6);
+        const isDayEnabled = (todayDay === 0 || todayDay === 2 || todayDay === 4 || todayDay === 5);
         if(isDayEnabled === true){
           gameScheduledNo();
         }else{
@@ -94,80 +117,19 @@ export class DisplayTableComp extends Component {
     
         let gameYes = this.gameOnNotification;
         let gameNo = this.waitingNotification;
-        let playerCountStatus = this.state.developers;
+        let playerCountStatus = this.state.totalPlayers;
         if(isDayEnabled === false && playerCountStatus.length >= 8){
           gameYes();
         }else{
           gameNo();
         }
-      };
-    
-      handleNameChange = event => {
-        this.setState({ 
-          name: event.target.value 
-        });
-      };
-      handleTeamValue = event =>{
-        this.setState({
-          setTeamValue: event.target.value
-        });
-      };
-      handleSubmit = event => {
-        event.preventDefault();
-        let name = this.refs.name.value;
-        let teamColor = this.state.setTeamValue;
-        let uid = this.refs.uid.value;
-    
-        if (uid && name && teamColor) {
-          const { developers } = this.state;
-          const devIndex = developers.findIndex(data => {
-            return data.uid === uid;
-          });
-          developers[devIndex].name = name;
-          developers[devIndex].teamColor = teamColor;
-          this.setState({ developers });
-        } else if (name && teamColor) {
-          const uid = new Date().getTime().toString();
-          const { developers } = this.state;
-          developers.push({ uid, name, teamColor });
-          this.setState({ developers });
-        }
-        //this.refs.name.value = "";
-        this.setState({ 
-          name: '' 
-        });
-        this.refs.uid.value = "";
-      };
-    
+      }; 
       
-    
-      removeData = developer => {
-        const { developers } = this.state;
-        const newState = developers.filter(data => {
-          return data.uid !== developer.uid;
-        });
-        this.setState({ developers: newState });
-      };
-      removeAllData = () =>{    
-        let stopTime = new Date().getHours();
-        if(stopTime >= 14){
-          Firebase.database().ref("/").set(null);
-          Firebase.database().ref("/").set(this.state);
-          this.setState({
-            setTeamValue: '',
-            name: '',
-            developers: []
-          });
-        }else{
-          console.log("time is not 2pm yet");
-        }
-      };
   render() {
-    const { developers } = this.state;
     const { name } = this.state;
     const isEnabled = name.length > 0;
     let todayDay = new Date().getDay();
-    const isDayEnabled = (todayDay === 0 || todayDay === 2 || todayDay === 4 || todayDay === 6);
+    const isDayEnabled = (todayDay === 0 || todayDay === 2 || todayDay === 4 || todayDay === 5);
 
     const errors = validateName(this.state.name);
     return (
@@ -190,26 +152,28 @@ export class DisplayTableComp extends Component {
                                 id="playerName"
                                 type="text"
                                 ref="name"
+                                name="name"
                                 className={errors.name ? "form-control error" : "form-control"}
                                 placeholder="First Name"
                                 pattern="[a-zA-Z]+"
                                 value={this.state.name}
-                                onChange={this.handleNameChange}
+                                onChange={this.handleChange}
                                 disabled={isDayEnabled}
                                 autoFocus
+                                autoComplete="off"
                                 />
                             </div>
                             <div className="form-group col-md-6">
                                 <label>Team<br/>
                                     <input type="radio" name="teamColor" required className="teamColorRadio"
-                                    value="Any" checked={this.state.setTeamValue === "Any"}
-                                    onChange={this.handleTeamValue} disabled={isDayEnabled}/>Any
+                                    value="Any" checked={this.state.teamColor === "Any"}
+                                    onChange={this.handleChange} disabled={isDayEnabled}/>Any
                                     <input type="radio" name="teamColor" className="teamColorRadio"
-                                    value="White" checked={this.state.setTeamValue === "White"}
-                                    onChange={this.handleTeamValue} disabled={isDayEnabled}/>White
+                                    value="White" checked={this.state.teamColor === "White"}
+                                    onChange={this.handleChange} disabled={isDayEnabled}/>White
                                     <input type="radio" name="teamColor" className="teamColorRadio"
-                                    value="Dark" checked={this.state.setTeamValue === "Dark"}
-                                    onChange={this.handleTeamValue} disabled={isDayEnabled}/>Dark
+                                    value="Dark" checked={this.state.teamColor === "Dark"}
+                                    onChange={this.handleChange} disabled={isDayEnabled}/>Dark
                                 </label>
                             </div>
                         </div>
@@ -230,13 +194,13 @@ export class DisplayTableComp extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {developers.map(developer => (                 
-                            <tr key={developer.uid}>
-                                <td>{developer.name}</td>
-                                <td>{developer.teamColor}</td>
+                            {this.state.totalPlayers.map(playerDetails => (                 
+                            <tr key={playerDetails.id}>
+                                <td>{playerDetails.namedb}</td>
+                                <td>{playerDetails.teamColordb}</td>
                                 <td>
                                 <button
-                                    onClick={() => this.removeData(developer)}
+                                    onClick={() => this.removeItem(playerDetails.id)}
                                     className="btn btn-link"
                                     >
                                     Delete

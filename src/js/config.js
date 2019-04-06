@@ -1,10 +1,9 @@
 const config = {
-    apiKey: "AIzaSyCGAoa7-A27u0_B2LcNXZOLOj1IvvMD25g",
-    authDomain: "soccer-gameon.firebaseapp.com",
-    databaseURL: "https://soccer-gameon.firebaseio.com",
-    projectId: "soccer-gameon",
-    storageBucket: "soccer-gameon.appspot.com",
-    messagingSenderId: "567233777368"
-  };
-
-  export default config;
+  apiKey: "AIzaSyDk9CxUO-wSaaCPEmFhih5OtkojPR5bdGw",
+  authDomain: "soccer-gameon-final.firebaseapp.com",
+  databaseURL: "https://soccer-gameon-final.firebaseio.com",
+  projectId: "soccer-gameon-final",
+  storageBucket: "",
+  messagingSenderId: "1034908759476"
+};
+export default config;
