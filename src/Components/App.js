@@ -36,7 +36,12 @@ export default App;
 // delete db after 2pm everyday - done
 
 // WIP
-// api key hide or env variables? in gitignore file?
+// web app manifest does not have png icon of at least 192px
+// manifest does not have png icon of at least 512px
+// consider using a service worker, register a service worker, unable to fetch start URL via service worker.
+// page tab order - game rules tab.., chnage table div to main, add skip to main content, focus colors, color contrast, set focus to game on on change
+// remove unused css 2.28f28c55.chunk.css
+// efficient cache policy for static assets
 // db security measures?
 // analytics
 // delete only self entered entry // add authentications

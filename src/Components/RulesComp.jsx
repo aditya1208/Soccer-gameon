@@ -4,8 +4,8 @@ const data = [
   {
     title: 'Game rules',
     rulesTab: `
-    1. Minimum of 8 players required to schedule a game. Games on Monday, Wednesday and Friday between 12PM to 1PM.
-    2. Pick a team color of your choice. This helps everyone know if a team can be formed.
+    1. Minimum of 8 players required to schedule a game. Game is on Monday, Wednesday and Friday between 12PM to 1PM.
+    2. Pick a team color of your choice. This helps everyone know if a balanced team can be formed.
     3. This is a friendly game, keep it simple.
     4. Players rotate being Goalkeeper, can also volunteer to catch a breath.
     5. All experience levels welcome.`
@@ -18,6 +18,14 @@ const data = [
     3. Name cannot be empty and only alphabets are accepted. Both name and team are required.
     4. You can delete your entry, if you need to.
     5. All entries of that day will be deleted after 2PM EST.
+    `
+  },
+  {
+    title: 'Future enhancements',
+    rulesTab: `
+    1. Players will receive game status emails based on the minimum player requirement, 30 minutes before the game.
+    2. Social sign-in options, to let a player only delete their entry and not others.
+    3. Progressive web app.
     `
   }
 ]
@@ -54,26 +62,26 @@ class AccordionItem extends Component {
           title
         },
         state: {
-            tabIsOpen
+          tabIsOpen
         }
       } = this
       
       return (
         <div className={tabIsOpen ? "accordion-item accordion-item--opened" : "accordion-item"} 
-            onClick={()=>{this.setState({tabIsOpen: !tabIsOpen})}}>
-            <div className="accordion-item__line">
-                <h3 className="accordion-item__title">
-                    {title}
-                </h3>
-                <span className="accordion-item__icon"/>
+          onClick={()=>{this.setState({tabIsOpen: !tabIsOpen})}}>
+          <div className="accordion-item__line">
+            <h3 className="accordion-item__title">
+              {title}
+            </h3>
+            <span className="accordion-item__icon"/>
+          </div>
+          <div className="accordion-item__inner">
+            <div className="accordion-item__content">
+              <p className="accordion-item__paragraph">
+                {rulesTab}
+              </p>
             </div>
-            <div className="accordion-item__inner">
-                <div className="accordion-item__content">
-                    <p className="accordion-item__paragraph">
-                        {rulesTab}
-                    </p>
-                </div>
-            </div>
+          </div>
         </div>
       )
     }
