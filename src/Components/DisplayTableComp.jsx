@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import firebase from "firebase";
-import config from "./../js/config";
+import config from "../config";
 
 function validateName (name){
     return {
