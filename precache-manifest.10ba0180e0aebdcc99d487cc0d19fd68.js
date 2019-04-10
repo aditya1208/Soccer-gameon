@@ -4,15 +4,15 @@ self.__precacheManifest = [
     "url": "/soccer-gameon/static/js/runtime~main.67c57b44.js"
   },
   {
-    "revision": "07a0aa517387b1f9d35c",
-    "url": "/soccer-gameon/static/js/main.9e88d25e.chunk.js"
+    "revision": "b185f0a3a7c7ef4e8718",
+    "url": "/soccer-gameon/static/js/main.c24ca215.chunk.js"
   },
   {
     "revision": "74290eca83c48f5d2abd",
     "url": "/soccer-gameon/static/js/2.0f4cba89.chunk.js"
   },
   {
-    "revision": "07a0aa517387b1f9d35c",
+    "revision": "b185f0a3a7c7ef4e8718",
     "url": "/soccer-gameon/static/css/main.4fcac44d.chunk.css"
   },
   {
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/soccer-gameon/static/css/2.28f2fc55.chunk.css"
   },
   {
-    "revision": "ac96188dfe5307ceb1f8d1aa1656b44c",
+    "revision": "2e33f62e2decde92f0a62cb554dd9085",
     "url": "/soccer-gameon/index.html"
   }
 ];
